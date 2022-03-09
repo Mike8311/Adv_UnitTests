@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -19,9 +20,17 @@ public class IOOperations {
     public double inputDouble() {
         if (firstInput) {
             System.out.print( "Введите дробное число: " );
-            firstInput = false;
         } else System.out.print( "И еще одно: " );
-        return scanner.nextDouble();
+
+        try {
+            double result = scanner.nextDouble();
+            firstInput = false;
+            return result;
+        } catch (InputMismatchException e) {
+            System.out.println("Необходимо ввести дробное число! Повторите ввод");
+            scanner.next();
+            return inputDouble();
+        }
     }
 
     /**
@@ -29,11 +38,11 @@ public class IOOperations {
      * @return операция калькулятора
      */
     public String inputOperation() {
-        System.out.print( "Введите операцию калькулятора (+,-,/,*): " );
+        System.out.println( "Введите операцию калькулятора (+,-,/,*): " );
         String result = scanner.next();
 
         if (!"+-/*".contains( result) ) {
-            System.out.print( "Операция введена неверно, повторите ввод (+,-,/,*): " );
+            System.out.println( "Операция введена неверно! Повторите ввод" );
             inputOperation();
         }
 
